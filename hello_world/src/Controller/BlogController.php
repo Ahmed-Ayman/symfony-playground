@@ -4,6 +4,9 @@
 namespace App\Controller;
 
 
+use App\Entity\BlogPost;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,27 +14,14 @@ class BlogController
 {
 
     /**
-     * now page is always required.
-     *
-     * @Route("/blog/{page<\d+>?1}", name="blog_pageid_show")
-     *
-     * @param string $page
+     * @Route("/blog/{slug?}", name="blog_show")
+     * @ParamConverter("post", class="App:BlogPost")
+     * @param BlogPost $post
      * @return Response
      */
-    public function showPage(int $page)
+    public function show(BlogPost $post = null)
     {
-        return new Response("<h1> Page: " . str_replace("-", " ", $page) . "</h1>");
-    }
-
-    /**
-     * @Route("/blog/{slug}", name="blog_show")
-     *
-     * @param string $slug
-     * @return Response
-     */
-    public function show(string $slug)
-    {
-        return new Response("<h1> Title: " . str_replace("-", " ", $slug) . "</h1>");
+        return new Response("hello");
     }
 
 }

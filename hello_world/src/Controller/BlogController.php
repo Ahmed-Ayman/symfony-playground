@@ -11,12 +11,14 @@ class BlogController
 {
 
     /**
-     * @Route("/blog/{page<\d+>}", name="blog_pageid_show")
+     * now page is always required.
+     *
+     * @Route("/blog/{page<\d+>?1}", name="blog_pageid_show")
      *
      * @param string $page
      * @return Response
      */
-    public function showPage(int $page = 0)
+    public function showPage(int $page)
     {
         return new Response("<h1> Page: " . str_replace("-", " ", $page) . "</h1>");
     }

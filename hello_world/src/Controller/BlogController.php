@@ -9,23 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController
 {
-    /**
-     * @Route("/blog", name="blog_list")
-     * @param string $slug
-     * @return Response
-     */
-    public function list()
-    {
-        return new Response('list of blog posts');
-    }
 
     /**
-     * @Route("/blog/{page}", name="blog_pageid_show", requirements={"page"="\d+"})
+     * @Route("/blog/{page<\d+>}", name="blog_pageid_show")
      *
      * @param string $page
      * @return Response
      */
-    public function showPage(int $page)
+    public function showPage(int $page = 0)
     {
         return new Response("<h1> Page: " . str_replace("-", " ", $page) . "</h1>");
     }

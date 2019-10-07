@@ -20,6 +20,17 @@ class BlogController
     }
 
     /**
+     * @Route("/blog/{page}", name="blog_pageid_show", requirements={"page"="\d+"})
+     *
+     * @param string $page
+     * @return Response
+     */
+    public function showPage(int $page)
+    {
+        return new Response("<h1> Page: " . str_replace("-", " ", $page) . "</h1>");
+    }
+
+    /**
      * @Route("/blog/{slug}", name="blog_show")
      *
      * @param string $slug

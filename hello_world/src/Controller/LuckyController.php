@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LuckyController
 {
   /**
-   * @Route("/lucky/number")
+   * @Route("/lucky/number", name="lucky_number")
    */
   public function number()
   {

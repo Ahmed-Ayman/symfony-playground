@@ -14,12 +14,17 @@ class BlogController
 {
 
     /**
-     * @Route("/blog/{slug?}", name="blog_show")
-     * @ParamConverter("post", class="App:BlogPost")
-     * @param BlogPost $post
-     * @return Response
+     * @Route(
+     *     "/blogs/{_locale}/search.{_format}",
+     *     locale="en",
+     *     format="html",
+     *     requirements={
+     *         "_locale": "en|fr",
+     *         "_format": "html|xml",
+     *     }
+     * )
      */
-    public function show(BlogPost $post = null)
+    public function show()
     {
         return new Response("hello");
     }

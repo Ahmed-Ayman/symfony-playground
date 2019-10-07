@@ -9,16 +9,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController
 {
-    // this one is used by a yaml route in confg/routes.yaml
-    // it's not such a good idea since you will need to keep going between the functions and the
-    // route file to double check out.
+    /**
+     * @Route("/blog", name="blog_list")
+     * @param string $slug
+     * @return Response
+     */
     public function list()
     {
         return new Response('list of blog posts');
     }
 
-    public function __invoke()
+    /**
+     * @Route("/blog/{slug}", name="blog_show")
+     *
+     * @param string $slug
+     * @return Response
+     */
+    public function show(string $slug)
     {
-        return new Response('hello world!');
+        return new Response("<h1> Title: " . str_replace("-", " ", $slug) . "</h1>");
     }
+
 }

@@ -1,0 +1,6 @@
+{% set route_name = app.request.attributes.get('_route') %}
+{{ route_name }}
+<br>
+<br>
+<br>
+{{ app.request.attributes.all() | json_encode(constant('JSON_PRETTY_PRINT')) }}

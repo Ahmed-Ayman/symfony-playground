@@ -2,20 +2,24 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/blog", requirements={"locale": "en|es|fr"}, name="blog_")
  */
-class BlogController
+class BlogController extends AbstractController
 {
     /**
-     * @Route("/{_locale}", name="index")
+     * @Route("/{_locale}", name="index", defaults={"_locale":"en"})
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new Response('index');
+        $route_name = $request->attributes->get('_route');
+
+        return $this->render('blog.html.twig');
     }
 
     /**

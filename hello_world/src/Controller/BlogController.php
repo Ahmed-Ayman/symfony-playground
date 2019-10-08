@@ -11,14 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController
-
 {
     /**
-     * @Route("/blog/{page}", name="blog_index", defaults={"page": 1, "title": "Hello world!"})
+     * @Route("/blog/{page}", name="blog_index", requirements={"page"=".+"})
      */
-    public function index(int $page, string $title)
+    public function index( $page)
     {
-        return new Response($title);
+        return new Response($page);
     }
 
 }

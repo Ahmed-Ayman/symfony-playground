@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/blog", requirements={"locale": "en|es|fr"}, name="blog_")
+ * @Route("/blog", name="blog_")
  */
 class BlogController extends AbstractController
 {
@@ -23,7 +23,10 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/", name="post")
+     * @Route({
+     *     "en": "/about-us",
+     *     "ar": "/من-نحن"
+     * }, name="about_us")
      */
     public function show()
     {

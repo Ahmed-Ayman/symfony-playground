@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/{_locale}", name="index", defaults={"_locale":"en"})
+     * @Route("/", host="localhost")
      */
     public function index(Request $request)
     {
@@ -23,9 +23,9 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/posts/{slug}", name="post")
+     * @Route("/", name="post")
      */
-    public function show($slug)
+    public function show()
     {
         return new Response('show');
 

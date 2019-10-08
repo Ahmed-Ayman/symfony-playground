@@ -1,23 +1,29 @@
 <?php
 
-
 namespace App\Controller;
 
-
-use App\Entity\BlogPost;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/blog", requirements={"locale": "en|es|fr"}, name="blog_")
+ */
 class BlogController
 {
     /**
-     * @Route("/blog/{page}", name="blog_index", requirements={"page"=".+"})
+     * @Route("/{_locale}", name="index")
      */
-    public function index( $page)
+    public function index()
     {
-        return new Response($page);
+        return new Response('index');
     }
 
+    /**
+     * @Route("/{_locale}/posts/{slug}", name="post")
+     */
+    public function show($slug)
+    {
+        return new Response('show');
+
+    }
 }

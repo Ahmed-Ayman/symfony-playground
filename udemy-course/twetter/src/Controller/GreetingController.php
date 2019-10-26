@@ -4,7 +4,7 @@
 namespace App\Controller;
 
 
-use App\GreentingService\Greeting;
+use App\Service\Greeting;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +29,7 @@ class GreetingController extends AbstractController
      */
     public function greetName(Request $request)
     {
-      return  $this->render('base.html.twig', [
+        return $this->render('base.html.twig', [
             'greeting_message' => $this->greeting->greet($request->get('name') ?? 'no name')
         ]);
     }

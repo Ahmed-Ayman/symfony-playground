@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\GreentingService;
+namespace App\Service;
 
 
 use Psr\Log\LoggerInterface;

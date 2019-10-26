@@ -47,8 +47,8 @@ class Greeting
             ->setTo('admin@example.com')
             ->setFrom('me@example.com')
             ->addPart('Hello There, welcome to the site.');
-
         $this->mailer->send($message);
+
         $this->logger->info($this->message . " $name ");
         return "Hi $name";
     }

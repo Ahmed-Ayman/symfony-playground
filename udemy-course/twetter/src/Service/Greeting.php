@@ -29,11 +29,16 @@ class Greeting
      * @var Swift_Mailer
      */
     private $mailer;
+    /**
+     * @var string
+     */
+    private $message;
 
-    public function __construct(LoggerInterface $logger, Swift_Mailer $mailer)
+    public function __construct(LoggerInterface $logger, Swift_Mailer $mailer , string $message)
     {
         $this->logger = $logger;
         $this->mailer = $mailer;
+        $this->message = $message;
     }
 
     public function greet($name): string
@@ -44,7 +49,7 @@ class Greeting
             ->addPart('Hello There, welcome to the site.');
 
         $this->mailer->send($message);
-        $this->logger->info("Hi $name ");
+        $this->logger->info($this->message . " $name ");
         return "Hi $name";
     }
 }

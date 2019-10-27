@@ -4,7 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    hello_message: 'hello ~~'
+  locale: 'en'
+  hello_message: 'hello ~~'
 services:
   # default configuration for services in *this* file
   _defaults:
@@ -12,6 +13,7 @@ services:
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
     bind:
       $message: '%hello_message%'
+      $locale: '%locale%'
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -30,3 +32,7 @@ services:
   App\Service\Greeting:
     arguments:
       $message: "hey"
+
+#  App\Twig\AppExtension:
+#    arguments:
+#      $locale: '%locale%'

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/blog")
@@ -54,7 +55,8 @@ class BlogController extends AbstractController
         $this->posts[uniqid()] = [
             'title' => 'Random Title' . rand(1, 10000),
             'body' => rand(1, 1000) . ' - Lorem ipst Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
-            sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'
+            sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+            'date' => new \DateTime()
         ];
         $this->session->set('posts', $this->posts);
 

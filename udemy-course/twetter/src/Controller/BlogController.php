@@ -14,6 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
+ * @Route("/")
  * @Route("/blog")
  */
 class BlogController extends AbstractController

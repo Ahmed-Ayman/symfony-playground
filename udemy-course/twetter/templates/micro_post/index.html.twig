@@ -10,10 +10,8 @@
         <a href="{{ path('micro_post_add') }}">Add New Post</a>
     </small>
     <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
-
     {% for post in posts %}
-        <a href="{{ post.id }}">
+
             {{ include('micro_post/post.html.twig', {'post': post}) }}
-        </a>
     {% endfor %}
 {% endblock %}

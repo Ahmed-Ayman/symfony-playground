@@ -55,7 +55,7 @@ class MicroPostController extends AbstractController
      */
     public function index()
     {
-        $posts = $this->getDoctrine()->getRepository(MicroPost::class)->findAll();
+        $posts = $this->getDoctrine()->getRepository(MicroPost::class)->findBy([], ['time' => 'DESC']);
         return $this->render('micro_post/index.html.twig', [
                 'posts' => $posts,
             ]
@@ -90,14 +90,41 @@ class MicroPostController extends AbstractController
     }
 
     /**
+     * @Route("/edit/{id}", name="micro_post_edit")
+     */
+    public function edit(MicroPost $post, Request $request)
+    {
+
+        $editForm = $this->formFactory->create(
+            MicroPostType::class,
+            $post);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            try {
+                $this->entityManager->flush();
+            } catch (ORMException $e) {
+                $this->addFlash('error', 'something went wrong');
+            }
+            $url = $this->router->generate('micro_post_index');
+            $this->addFlash('success', 'post was added successfully!');
+            return new RedirectResponse($url);
+        }
+        return $this->render('micro_post/add.html.twig', [
+            'form' => $editForm->createView()
+        ]);
+    }
+
+
+    /**
      * @Route("/{id}", name="micro_post_show")
      */
-    public function post($id)
+    public function post(MicroPost $post)
     {
-        if (!$post = $this->repository->find($id))
+        if (!isset($post))
             throw new NotFoundHttpException('Post not found');
 
-        return $this->render('micro_post/post.html.twig', ['post' => $post]);
+        return $this->render('micro_post/show-post.html.twig', ['post' => $post]);
     }
 
 }

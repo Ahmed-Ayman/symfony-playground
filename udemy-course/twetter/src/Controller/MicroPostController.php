@@ -7,13 +7,12 @@ use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -65,6 +64,8 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/add", name="micro_post_add")
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function add(Request $request)
     {
@@ -91,6 +92,9 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="micro_post_edit")
+     * @param MicroPost $post
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function edit(MicroPost $post, Request $request)
     {
@@ -115,9 +119,30 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/delete/{id}", name="micro_post_delete")
+     * @param MicroPost $post
+     * @return RedirectResponse
+     */
+    public function delete(MicroPost $post)
+    {
+
+        try {
+            $this->entityManager->remove($post);
+            $this->entityManager->flush();
+        } catch (ORMException $e) {
+            $this->addFlash('error', 'something went wrong!');
+        }
+        $this->addFlash('success', 'Deleted Successfully');
+        $url = $this->router->generate('micro_post_index');
+        return new RedirectResponse($url);
+    }
+
 
     /**
      * @Route("/{id}", name="micro_post_show")
+     * @param MicroPost $post
+     * @return Response
      */
     public function post(MicroPost $post)
     {

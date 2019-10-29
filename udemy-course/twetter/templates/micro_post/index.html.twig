@@ -4,7 +4,7 @@
 
 {% block body %}
     {% for messsage in app.flashes('success') %}
-        <div class="alert-success p-4">  {{ messsage }}</div>
+        <div class=" alert alert-success">  {{ messsage }}</div>
     {% endfor %}
     <small class="d-block text-right mt-3">
         <a href="{{ path('micro_post_add') }}">Add New Post</a>
@@ -12,6 +12,6 @@
     <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
     {% for post in posts %}
 
-            {{ include('micro_post/post.html.twig', {'post': post}) }}
+        {{ include('micro_post/post.html.twig', {'post': post}) }}
     {% endfor %}
 {% endblock %}

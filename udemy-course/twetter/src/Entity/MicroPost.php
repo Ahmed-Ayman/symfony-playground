@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MicroPostRepository")
@@ -19,11 +20,14 @@ class MicroPost
 
     /**
      * @ORM\Column(type="string", length=280)
+     * @Assert\NotBlank()
+     * @Assert\Length(min="100", minMessage="Not less than 10.")
      */
     private $text;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      */
     private $time;
 

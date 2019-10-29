@@ -11,8 +11,6 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
         for ($i = 0; $i < 10; $i++) {
             $microPost = new MicroPost();
             $microPost->setText('New Micro Post ' . rand(1, 100));

@@ -102,6 +102,7 @@ class MicroPostController extends AbstractController
         $editForm = $this->formFactory->create(
             MicroPostType::class,
             $post);
+        // is valid and stuff
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

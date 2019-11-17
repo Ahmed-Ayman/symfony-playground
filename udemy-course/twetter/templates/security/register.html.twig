@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#    {% if error %}#}
+    {#        <div class="alert alert-danger">#}
+    {#            {{ error.messageKey|trans(error.messageData, 'security') }}#}
+    {#        </div>#}
+    {#    {% endif %}#}
+    {% include 'logo.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    {#    <form action="{{ path('register') }}" method="post">#}
+    {#        <section>#}
+    {#            {% include 'logo.html.twig' %}#}
+
+    {#            <div class="form-group">#}
+    {#                <label class="form-control-label required bg-light pl-4  pt-4 pb-4 d-block"#}
+    {#                       for="password">Full Name</label>#}
+    {#                <input type="text" id="full-name" name="_full_name" required="required" class="form-control">#}
+    {#                <p class="text-muted">enter your full name.</p>#}
+    {#            </div>#}
+    {#            <div class="form-group">#}
+    {#                <label class="form-control-label required" for="username">Username</label>#}
+    {#                <input type="text" id="username" name="_username" required="required" class="form-control">#}
+    {#                <p class="text-muted">enter your user name.</p>#}
+    {#            </div>#}
+    {#            <div class="form-group">#}
+    {#                <label class="form-control-label required" for="password">Password</label>#}
+    {#                <input type="password" id="password" name="_password" required="required" class="form-control">#}
+    {#                <p class="text-muted ">enter your password.</p>#}
+    {#            </div>#}
+
+    {#            <div class="form-group">#}
+    {#                <button type="submit" id="register" name="_register" class="btn-success btn">Register</button>#}
+    {#            </div>#}
+
+    {#            #}{#      TODO: check this out.  #}
+    {#            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">#}
+    {#            <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">#}
+    {#        </section>#}
+    {#    </form>#}
+{% endblock %}

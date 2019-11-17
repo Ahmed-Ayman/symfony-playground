@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -38,16 +39,17 @@ class User implements UserInterface, Serializable
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
+     * @Assert\Length(min="10")
      *
      */
     private $password;
 
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=8,max=4096)
-     */
-    private $plainPassword;
+//    /**
+//     * @var string
+//     * @Assert\NotBlank()
+//     * @Assert\Length(min=8,max=4096)
+//     */
+//    private $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -62,6 +64,25 @@ class User implements UserInterface, Serializable
      * @Assert\Length(min="10", max="100")
      */
     private $fullName;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
+     */
+    private $posts;
+
+    // to init the posts
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPosts(): ArrayCollection
+    {
+        return $this->posts;
+    }
 
     public function getId(): ?int
     {
@@ -182,22 +203,4 @@ class User implements UserInterface, Serializable
             $this->email
         ]);
     }
-
-    /**
-     * @return string
-     */
-    public function getPlainPassword()
-    {
-//        return  '';
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param string $plainPassword
-     */
-    public function setPlainPassword(string $plainPassword): void
-    {
-        $this->plainPassword = $plainPassword;
-    }
-
 }

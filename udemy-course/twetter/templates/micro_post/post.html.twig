@@ -4,10 +4,12 @@
 </small>
 <a href="{{ post.id }}">
     <div class="media text-muted pt-3">
-        <img data-src="holder.js/32x32?text=MJ&bg=e83e8c&fg=fff&size=8" alt="" class="mr-2 rounded" src="">
+        {% set initLetters = post.user.fullname | split(' ') %}
+        <img data-src="holder.js/32x32?text={{ attribute(initLetters, 0) | first }}{{ attribute(initLetters, 1) | first }}&bg=e83e8c&fg=fff&size=8"
+             alt="" class="mr-2 rounded" src="">
         <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <span class="d-block"><strong
-                            class="text-gray-dark">@username</strong><small>·        {{ post.time | date('Y-m-d') }}
+                            class="text-gray-dark">@{{ post.user.username }}</strong><small>·        {{ post.time | date('Y-m-d') }}
             </small></span>
             {{ post.text }}
         </p>

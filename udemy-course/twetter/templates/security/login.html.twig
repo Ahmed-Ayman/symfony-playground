@@ -9,6 +9,7 @@
 
     <form action="{{ path('security_login') }}" method="post">
         <div>
+            {% include 'logo.html.twig' %}
             <div class="form-group">
                 <label class="form-control-label required" for="username">Username</label>
                 <input type="text" id="username" name="_username" required="required" class="form-control"
@@ -22,7 +23,6 @@
                 <button type="submit" id="Login" name="Login" class="btn-secondary btn">Login</button>
             </div>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-            {{ dump(app.request.get('redirect_to')) }}
             <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}">
         </div>
     </form>

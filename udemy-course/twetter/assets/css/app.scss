@@ -1,5 +1,9 @@
 body {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
 @import "~bootstrap";
+@import "elements";
+#logo {
+  max-width: 50px;
+}

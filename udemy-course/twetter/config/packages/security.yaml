@@ -1,3 +1,4 @@
+# TODO: learn how configs work?
 security:
   encoders:
     App\Entity\User:

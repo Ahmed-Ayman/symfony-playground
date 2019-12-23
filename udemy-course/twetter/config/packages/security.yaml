@@ -1,5 +1,8 @@
 # TODO: learn how configs work?
 security:
+  access_decision_manager:
+    #    this is by default
+    strategy: affirmative
   encoders:
     App\Entity\User:
       algorithm: auto

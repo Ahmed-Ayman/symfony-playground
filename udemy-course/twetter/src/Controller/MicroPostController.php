@@ -98,7 +98,7 @@ class MicroPostController extends AbstractController
      */
     public function edit(MicroPost $post, Request $request)
     {
-
+        $this->denyAccessUnlessGranted('edit', $post);
         $editForm = $this->formFactory->create(
             MicroPostType::class,
             $post);

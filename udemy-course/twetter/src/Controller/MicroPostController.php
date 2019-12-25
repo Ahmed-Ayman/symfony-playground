@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManager;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @Route("/")
@@ -65,12 +67,15 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/micro-post/add", name="micro_post_add")
+     * @Security("is_granted('ROLE_USER')")
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function add(Request $request)
+    public function add(Request $request, TokenStorageInterface $token)
     {
         $microPost = new MicroPost();
+        $user = $token->getToken()->getUser();
+        $microPost->setUser($user);
         $form = $this->formFactory->create(MicroPostType::class, $microPost);
         $form->handleRequest($request);
 
@@ -85,7 +90,7 @@ class MicroPostController extends AbstractController
             $this->addFlash('success', 'post was added successfully!');
             return new RedirectResponse($url);
         }
-        return $this->render('add-post.html.twig', [
+        return $this->render('micro_post/add-post.html.twig', [
             'form' => $form->createView()
         ]);
     }

@@ -8,6 +8,7 @@ use App\Entity\MicroPost;
 use App\Entity\User;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Exception\LogicException;
 
@@ -20,7 +21,15 @@ class MicroPostVoter extends Voter
 //    TODO: define view voter.
     const EDIT = 'edit';
     const DELETE = 'delete';
+    /**
+     * @var AccessDecisionManagerInterface
+     */
+    private $decisionManager;
 
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
 
     /**
      * Determines if the attribute and subject are supported by this voter.
@@ -52,6 +61,10 @@ class MicroPostVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $microPost, TokenInterface $token)
     {
+        if ($this->decisionManager->decide($token, [User::ROLE_ADMIN])) {
+            return true;
+        }
+
         $user = $token->getUser();
         if ($user instanceof User) {
             switch ($attribute) {

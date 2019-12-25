@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, Serializable
 {
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -31,11 +33,6 @@ class User implements UserInterface, Serializable
     private $username;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
@@ -44,12 +41,6 @@ class User implements UserInterface, Serializable
      */
     private $password;
 
-//    /**
-//     * @var string
-//     * @Assert\NotBlank()
-//     * @Assert\Length(min=8,max=4096)
-//     */
-//    private $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,6 +56,11 @@ class User implements UserInterface, Serializable
      */
     private $fullName;
 
+    /**
+     * @var array
+     * @ORM\Column(type="simple_array")
+     */
+    private $roles;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
      */
@@ -112,10 +108,8 @@ class User implements UserInterface, Serializable
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return $roles;
     }
 
     public function setRoles(array $roles): self

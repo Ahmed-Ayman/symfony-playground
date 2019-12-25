@@ -44,3 +44,6 @@ security:
     - { path: ^/micro-post, roles: ROLE_USER}
   # - { path: ^/admin, roles: ROLE_ADMIN }
   # - { path: ^/profile, roles: ROLE_USER }
+  role_hierarchy:
+    ROLE_ADMIN: ROLE_USER
+

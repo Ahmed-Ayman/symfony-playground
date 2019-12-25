@@ -162,6 +162,7 @@ class MicroPostController extends AbstractController
     /**
      * @Route("/micro-post/user/{username}",name="micro_post_by_user")
      * @param User $user
+     * @return Response
      */
     public function showUserPosts(User $user)
     {

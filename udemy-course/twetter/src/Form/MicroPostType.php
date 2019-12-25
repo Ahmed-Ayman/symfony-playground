@@ -17,7 +17,6 @@ class MicroPostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('text', TextareaType::class, ['label' => false])
-            ->add('time', DateType::class, ['label'=>false])
             ->add('save', SubmitType::class);
     }
 

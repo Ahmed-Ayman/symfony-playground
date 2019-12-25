@@ -66,6 +66,15 @@ class User implements UserInterface, Serializable
      */
     private $posts;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="following")
+     */
+    private $followers;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="followers")
+     */
+    private $following;
+
     // to init the posts
     public function __construct()
     {

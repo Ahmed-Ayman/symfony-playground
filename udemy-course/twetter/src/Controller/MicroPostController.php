@@ -159,4 +159,19 @@ class MicroPostController extends AbstractController
         return $this->render('micro_post/post-page.html.twig', ['post' => $post]);
     }
 
+    /**
+     * @Route("/micro-post/user/{username}",name="micro_post_by_user")
+     * @param User $user
+     */
+    public function showUserPosts(User $user)
+    {
+//        $posts = $this->getDoctrine()->getRepository(MicroPost::class)
+//            ->findBy(['user' => $user], ['time' => 'DESC']);
+        $posts = $user->getPosts(); // lazy loading and using proxy classes, but you can't sort the posts like above.
+        return $this->render('micro_post/index--listing.html.twig', [
+                'posts' => $posts,
+            ]
+        );
+    }
+
 }

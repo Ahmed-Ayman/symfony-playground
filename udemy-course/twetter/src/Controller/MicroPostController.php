@@ -8,6 +8,7 @@ use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @Route("/micro-post")
+ * @Route("/")
  */
 class MicroPostController extends AbstractController
 {
@@ -55,7 +56,7 @@ class MicroPostController extends AbstractController
     public function index()
     {
         $posts = $this->getDoctrine()->getRepository(MicroPost::class)->findBy([], ['time' => 'DESC']);
-        return $this->render('micro_post/index.html.twig', [
+        return $this->render('micro_post/index--listing.html.twig', [
                 'posts' => $posts,
             ]
         );
@@ -63,14 +64,13 @@ class MicroPostController extends AbstractController
 
 
     /**
-     * @Route("/add", name="micro_post_add")
+     * @Route("/micro-post/add", name="micro_post_add")
      * @param Request $request
      * @return RedirectResponse|Response
      */
     public function add(Request $request)
     {
         $microPost = new MicroPost();
-
         $form = $this->formFactory->create(MicroPostType::class, $microPost);
         $form->handleRequest($request);
 
@@ -85,20 +85,21 @@ class MicroPostController extends AbstractController
             $this->addFlash('success', 'post was added successfully!');
             return new RedirectResponse($url);
         }
-        return $this->render('micro_post/add.html.twig', [
+        return $this->render('add-post.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/edit/{id}", name="micro_post_edit")
+     * @Route("/micro-post/edit/{id}", name="micro_post_edit")
+     * @Security("is_granted('edit', post)")
      * @param MicroPost $post
      * @param Request $request
      * @return RedirectResponse|Response
      */
     public function edit(MicroPost $post, Request $request)
     {
-        $this->denyAccessUnlessGranted('edit', $post);
+//        $this->denyAccessUnlessGranted('edit', $post);
         $editForm = $this->formFactory->create(
             MicroPostType::class,
             $post);
@@ -115,19 +116,19 @@ class MicroPostController extends AbstractController
             $this->addFlash('success', 'post was added successfully!');
             return new RedirectResponse($url);
         }
-        return $this->render('micro_post/add.html.twig', [
+        return $this->render('micro_post/add-post.html.twig', [
             'form' => $editForm->createView()
         ]);
     }
 
     /**
-     * @Route("/delete/{id}", name="micro_post_delete")
+     * @Route("/micro-post/delete/{id}", name="micro_post_delete")
+     * @Security("is_granted('delete', post)")
      * @param MicroPost $post
      * @return RedirectResponse
      */
     public function delete(MicroPost $post)
     {
-
         try {
             $this->entityManager->remove($post);
             $this->entityManager->flush();
@@ -141,7 +142,7 @@ class MicroPostController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="micro_post_show")
+     * @Route("/micro-post/{id}", name="micro_post_show")
      * @param MicroPost $post
      * @return Response
      */
@@ -150,7 +151,7 @@ class MicroPostController extends AbstractController
         if (!isset($post))
             throw new NotFoundHttpException('Post not found');
 
-        return $this->render('micro_post/show-post.html.twig', ['post' => $post]);
+        return $this->render('micro_post/post-page.html.twig', ['post' => $post]);
     }
 
 }

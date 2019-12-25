@@ -6,12 +6,10 @@ namespace App\Security;
 
 use App\Entity\MicroPost;
 use App\Entity\User;
-use mysql_xdevapi\Exception;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\LogicException;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /***
  * Class MicroPostVoter
@@ -19,6 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class MicroPostVoter extends Voter
 {
+//    TODO: define view voter.
     const EDIT = 'edit';
     const DELETE = 'delete';
 
@@ -54,33 +53,26 @@ class MicroPostVoter extends Voter
     protected function voteOnAttribute($attribute, $microPost, TokenInterface $token)
     {
         $user = $token->getUser();
-        switch ($attribute) {
-            case self::DELETE:
-                return $this->canDelete($microPost, $user);
-            case self::EDIT:
-                return $this->canEdit($microPost, $user);
+        if ($user instanceof User) {
+            switch ($attribute) {
+                case self::DELETE:
+                    return $this->canDelete($microPost, $user);
+                case self::EDIT:
+                    return $this->canEdit($microPost, $user);
+            }
+        } else {
+            return false;
         }
-
-        throw  new LogicException("Access fucking to edit/delete is denied.");
+        throw  new LogicException("Something is wrong!");
     }
 
     private function canDelete(MicroPost $microPost, User $user)
     {
-        if ($microPost->getUser()->getId() === $user->getId()) {
-            return true;
-        } else {
-            throw  new AccessDeniedException("Fuck you can't delete");
-        }
-
+        return $microPost->getUser()->getId() === $user->getId();
     }
 
     private function canEdit(MicroPost $microPost, User $user)
     {
-
-        if ($microPost->getUser()->getId() === $user->getId()) {
-            return true;
-        } else {
-            throw  new AccessDeniedException("Fuck you can't edit");
-        }
+        return $microPost->getUser()->getId() === $user->getId();
     }
 }

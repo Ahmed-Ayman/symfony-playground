@@ -7,7 +7,7 @@
     {% endif %}
 
 </small>
-<a href="{{ post.id }}">
+<a href="{{ path('micro_post_show', {'id': post.id}) }}">
     <div class="media text-muted pt-3">
         {% set initLetters = post.user.fullname | split(' ') %}
         <img data-src="holder.js/32x32?text={{ attribute(initLetters, 0) | first }}{{ attribute(initLetters, 1) | first }}&bg=e83e8c&fg=fff&size=8"

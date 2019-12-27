@@ -8,12 +8,14 @@ use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -121,13 +123,18 @@ class MicroPostController extends AbstractController
     }
 
     /**
+     * security("is_granted('edit', post, message='Heyy accessdenied')")
      * @Route("/delete/{id}", name="micro_post_delete")
      * @param MicroPost $post
      * @return RedirectResponse
      */
     public function delete(MicroPost $post)
     {
+//        $this->denyAccessUnlessGranted('delete', $post);
 
+//        if (!$this->isGranted('delte',$post)){
+//            throw new UnauthorizedHttpException('Un authorized');
+//        }
         try {
             $this->entityManager->remove($post);
             $this->entityManager->flush();

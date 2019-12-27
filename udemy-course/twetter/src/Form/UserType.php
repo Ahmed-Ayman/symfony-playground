@@ -34,7 +34,7 @@ class UserType extends AbstractType
             ->add('agree', CheckboxType::class, [
                 'label' => 'I agree on the terms and conditions',
                 'mapped' => false,
-                'invalid_message'=> 'You cant register if you dont agree on the',
+                'invalid_message' => 'You cant register if you dont agree on the',
                 'constraints' => [
                     new IsTrue()
                 ]])
@@ -43,7 +43,7 @@ class UserType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
+        // what is the entity related to this form
         $resolver->setDefaults([
             'data_class' => User::class
         ]);

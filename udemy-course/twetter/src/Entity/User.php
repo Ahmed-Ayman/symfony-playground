@@ -64,6 +64,11 @@ class User implements UserInterface, Serializable
      */
     private $posts;
 
+    /**
+     * @var ArrayCollection $followers .
+     */
+    private $followers;
+
     // to init the posts
     public function __construct()
     {

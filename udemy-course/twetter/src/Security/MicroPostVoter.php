@@ -7,8 +7,9 @@ namespace App\Security;
 use App\Entity\MicroPost;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\LogicException;
 
 
 /***
@@ -17,10 +18,18 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class MicroPostVoter extends Voter
 {
-
+//    TODO: define view voter.
     const EDIT = 'edit';
-    const DELTE = 'delete';
+    const DELETE = 'delete';
+    /**
+     * @var AccessDecisionManagerInterface
+     */
+    private $decisionManager;
 
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
 
     /**
      * Determines if the attribute/action and subject are supported by this voter.
@@ -32,7 +41,7 @@ class MicroPostVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::DELTE, self::EDIT])) {
+        if (!in_array($attribute, [self::DELETE, self::EDIT])) {
             return false;
         }
         if (!$subject instanceof MicroPost)
@@ -52,33 +61,38 @@ class MicroPostVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $microPost, TokenInterface $token)
     {
+        if ($this->decisionManager->decide($token, [User::ROLE_ADMIN])) {
+            return true;
+        }
+
+        $user = $token->getUser();
+        if ($user instanceof User) {
+            switch ($attribute) {
+                case self::DELETE:
+                    return $this->canDelete($microPost, $user);
+                case self::EDIT:
+                    return $this->canEdit($microPost, $user);
+            }
+        } else {
+            return false;
+        }
         // checking the actual permissions.
         $authenticatedUser = $token->getUser();
         if (!$authenticatedUser instanceof User) {
             return false;
         }
 
-        /* @var MicroPost $subject */
-        return $microPost->getUser()->getId() === $authenticatedUser->getId();
+    
+        throw  new LogicException("Something is wrong!");
     }
-
+    
     private function canDelete(MicroPost $microPost, User $user)
     {
-        if ($microPost->getUser()->getId() === $user->getId()) {
-            return true;
-        } else {
-            throw  new AccessDeniedException("Fuck you can't delete");
-        }
-
+        return $microPost->getUser()->getId() === $user->getId();
     }
 
     private function canEdit(MicroPost $microPost, User $user)
     {
-
-        if ($microPost->getUser()->getId() === $user->getId()) {
-            return true;
-        } else {
-            throw  new AccessDeniedException("Fuck you can't edit");
-        }
+        return $microPost->getUser()->getId() === $user->getId();
     }
 }

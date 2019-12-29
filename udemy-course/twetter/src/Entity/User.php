@@ -18,7 +18,6 @@ class User implements UserInterface, Serializable
 {
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -32,11 +31,6 @@ class User implements UserInterface, Serializable
      * @Assert\Length(min="5", max="50")
      */
     private $username;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
 
     /**
      * @var string The hashed password
@@ -62,15 +56,24 @@ class User implements UserInterface, Serializable
     private $fullName;
 
     /**
+     * @var array
+     * @ORM\Column(type="simple_array")
+     */
+    private $roles;
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
      * mapped by $user variable in MicroPost.
      */
     private $posts;
 
     /**
-     * @var ArrayCollection $followers .
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="following")
      */
     private $followers;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="followers")
+     */
+    private $following;
 
     // to init the posts
     public function __construct()
@@ -81,7 +84,7 @@ class User implements UserInterface, Serializable
     /**
      * @return ArrayCollection
      */
-    public function getPosts(): ArrayCollection
+    public function getPosts()
     {
         return $this->posts;
     }

@@ -26,7 +26,7 @@
             {% if is_granted(['ROLE_USER']) %}
                 <li class="nav-item text-nowrap">
                     <a class="nav-link"
-                       href="#">{{ app.user.fullName }}</a>
+                       href="{{ path('micro_post_by_user', {'username':app.user.username}) }}">{{ app.user.fullName }}</a>
                 </li>
                 <li class="nav-item text-nowrap">
                     <a class="nav-link"

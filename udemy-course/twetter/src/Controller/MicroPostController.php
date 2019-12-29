@@ -55,11 +55,22 @@ class MicroPostController extends AbstractController
     /**
      * @Route("/", name="micro_post_index")
      */
-    public function index()
+    public function index(TokenStorageInterface $tokenStorage)
     {
-        $posts = $this->getDoctrine()->getRepository(MicroPost::class)->findBy([], ['time' => 'DESC']);
+        $currentUser = $tokenStorage->getToken()->getUser();
+        $usersToFollow = [];
+        if ($currentUser instanceof User) { // or this->getUser();
+            $following = $currentUser->getFollowing();
+            $posts = $this->getDoctrine()->getRepository(MicroPost::class)->findAllByUsers($following);
+            if (empty($posts)) {
+                $usersToFollow = $this->getDoctrine()->getRepository(User::class)->findAllWithMoreThan5Posts($currentUser);
+            }
+        } else {
+            $posts = $this->getDoctrine()->getRepository(MicroPost::class)->findBy([], ['time' => 'DESC']);
+        }
         return $this->render('micro_post/index--listing.html.twig', [
                 'posts' => $posts,
+                'usersToFollow' => $usersToFollow
             ]
         );
     }
@@ -164,7 +175,7 @@ class MicroPostController extends AbstractController
     }
 
     /**
-     * @Route("/micro-post/user/{username}",name="micro_post_by_user")
+     * @Route("/user/{username}",name="micro_post_by_user")
      * @param User $user
      * @return Response
      */
@@ -173,8 +184,9 @@ class MicroPostController extends AbstractController
 //        $posts = $this->getDoctrine()->getRepository(MicroPost::class)
 //            ->findBy(['user' => $user], ['time' => 'DESC']);
         $posts = $user->getPosts(); // lazy loading and using proxy classes, but you can't sort the posts like above.
-        return $this->render('micro_post/index--listing.html.twig', [
+        return $this->render('user/user-profile.html.twig', [
                 'posts' => $posts,
+                'user' => $user
             ]
         );
     }

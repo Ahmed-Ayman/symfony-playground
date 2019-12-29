@@ -72,13 +72,56 @@ class User implements UserInterface, Serializable
     private $followers;
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="followers")
+     * @ORM\JoinTable(name="following",
+     *     joinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *     @ORM\JoinColumn(name="following_user_id", referencedColumnName="id")
+     *     }
+     *  )
      */
     private $following;
 
     // to init the posts
     public function __construct()
     {
+        // TODO: understand the different between array collections and native arrays.
         $this->posts = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+        $this->following = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFollowers(): ArrayCollection
+    {
+        return $this->followers;
+    }
+
+    /**
+     * @param ArrayCollection $followers
+     */
+    public function setFollowers(ArrayCollection $followers): void
+    {
+        $this->followers = $followers;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFollowing(): ArrayCollection
+    {
+        return $this->following;
+    }
+
+    /**
+     * @param ArrayCollection $following
+     */
+    public function setFollowing(ArrayCollection $following): void
+    {
+        $this->following = $following;
     }
 
     /**

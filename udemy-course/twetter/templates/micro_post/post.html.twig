@@ -4,7 +4,7 @@
         <a href="{{ path('micro_post_edit', {'id':post.id}) }}">Edit</a>
     {% endif %}
 
-    {% if is_granted('delte', post) %}
+    {% if is_granted('delete', post) %}
         <a href="{{ path('micro_post_delete', {'id':post.id}) }}">Delete</a>
     {% endif %}
 </small>

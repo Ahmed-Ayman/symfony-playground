@@ -6,12 +6,10 @@ namespace App\Security;
 
 use App\Entity\MicroPost;
 use App\Entity\User;
-use mysql_xdevapi\Exception;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\Exception\LogicException;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 /***
  * Class MicroPostVoter
@@ -61,7 +59,7 @@ class MicroPostVoter extends Voter
         }
 
         /* @var MicroPost $subject */
-        return $subject->getUser()->getId() === $authenticatedUser->getId();
+        return $microPost->getUser()->getId() === $authenticatedUser->getId();
     }
 
     private function canDelete(MicroPost $microPost, User $user)

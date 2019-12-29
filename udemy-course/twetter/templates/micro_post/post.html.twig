@@ -1,11 +1,12 @@
 <small class="d-block text-right mt-3">
     {% if is_granted('edit', post) %}
+
         <a href="{{ path('micro_post_edit', {'id':post.id}) }}">Edit</a>
     {% endif %}
-    {% if is_granted('delete', post) %}
+
+    {% if is_granted('delte', post) %}
         <a href="{{ path('micro_post_delete', {'id':post.id}) }}">Delete</a>
     {% endif %}
-
 </small>
 <div class="media text-muted pt-3">
     {% set initLetters = post.user.fullname | split(' ') %}

@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -127,13 +128,18 @@ class MicroPostController extends AbstractController
     }
 
     /**
-     * @Route("/micro-post/delete/{id}", name="micro_post_delete")
-     * @Security("is_granted('delete', post)")
+     * security("is_granted('edit', post, message='Heyy accessdenied')")
+     * @Route("/delete/{id}", name="micro_post_delete")
      * @param MicroPost $post
      * @return RedirectResponse
      */
     public function delete(MicroPost $post)
     {
+//        $this->denyAccessUnlessGranted('delete', $post);
+
+//        if (!$this->isGranted('delte',$post)){
+//            throw new UnauthorizedHttpException('Un authorized');
+//        }
         try {
             $this->entityManager->remove($post);
             $this->entityManager->flush();

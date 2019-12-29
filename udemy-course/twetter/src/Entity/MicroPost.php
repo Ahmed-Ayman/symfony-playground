@@ -34,7 +34,7 @@ class MicroPost
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false) // each post has a user.
+     * @ORM\JoinColumn() // not nullable since we always have a user
      */
     private $user;
 

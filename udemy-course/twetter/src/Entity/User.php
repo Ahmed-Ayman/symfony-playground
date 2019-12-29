@@ -41,7 +41,6 @@ class User implements UserInterface, Serializable
      */
     private $password;
 
-
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
@@ -63,6 +62,7 @@ class User implements UserInterface, Serializable
     private $roles;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
+     * mapped by $user variable in MicroPost.
      */
     private $posts;
 

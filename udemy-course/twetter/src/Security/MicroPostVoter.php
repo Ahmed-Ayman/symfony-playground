@@ -32,7 +32,7 @@ class MicroPostVoter extends Voter
     }
 
     /**
-     * Determines if the attribute and subject are supported by this voter.
+     * Determines if the attribute/action and subject are supported by this voter.
      *
      * @param string $attribute An attribute
      * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
@@ -41,13 +41,13 @@ class MicroPostVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::EDIT, self::DELETE])) {
+        if (!in_array($attribute, [self::DELTE, self::EDIT])) {
             return false;
         }
-        if (!$subject instanceof MicroPost) {
+        if (!$subject instanceof MicroPost)
             return false;
-        }
-        return true;
+
+        return true; // we need to check permissions of this item.
     }
 
     /**
@@ -55,7 +55,7 @@ class MicroPostVoter extends Voter
      * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
      *
      * @param string $attribute
-     * @param MicroPost $microPost
+     * @param mixed $subject
      *
      * @return bool
      */
@@ -76,9 +76,16 @@ class MicroPostVoter extends Voter
         } else {
             return false;
         }
+        // checking the actual permissions.
+        $authenticatedUser = $token->getUser();
+        if (!$authenticatedUser instanceof User) {
+            return false;
+        }
+
+    
         throw  new LogicException("Something is wrong!");
     }
-
+    
     private function canDelete(MicroPost $microPost, User $user)
     {
         return $microPost->getUser()->getId() === $user->getId();

@@ -41,7 +41,7 @@ class MicroPostVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [self::DELTE, self::EDIT])) {
+        if (!in_array($attribute, [self::DELETE, self::EDIT])) {
             return false;
         }
         if (!$subject instanceof MicroPost)

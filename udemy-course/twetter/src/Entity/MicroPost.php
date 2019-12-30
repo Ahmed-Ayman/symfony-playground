@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,6 +39,20 @@ class MicroPost
      * @ORM\JoinColumn() // not nullable since we always have a user
      */
     private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="postsLiked")
+     * @ORM\JoinTable(name="post_liked_by",
+     *     joinColumns={@ORM\JoinColumn(name="post_id" , referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *     )
+     */
+    private $likedBy;
+
+    public function __construct()
+    {
+        $this->likedBy = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,5 +106,21 @@ class MicroPost
     {
         $this->time = new \DateTime();
     }
+
+    /**
+     * @return Collection
+     */
+    public function getLikedBy(): Collection
+    {
+        return $this->likedBy;
+    }
+
+    public function likePost(User $user)
+    {
+        if (!$this->likedBy->contains($user)) {
+            $this->likedBy->add($user);
+        }
+    }
+
 
 }

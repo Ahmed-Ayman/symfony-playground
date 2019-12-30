@@ -2,4 +2,54 @@
 
 {% block body %}
     {{ include('micro_post/post.html.twig' , {'post': post}) }}
+    {% set isLiked  = post.getLikedBy.contains(app.user) %}
+    <div class="pt-2">
+        <button id="like" class="btn btn-outline-secondary btn-sm"
+                style="display: {% if not isLiked %} block {% else %} none {% endif %}"> Like
+            <span class="badge badge-light" id="likes-like">
+            {{ post.likedBy.count }}
+        </span>
+        </button>
+        <button id="unlike" class="btn btn-outline-danger btn-sm"
+                style="display: {% if isLiked %} block {% else %} none {% endif %}"> UnLike
+            <span class="badge badge-light" id="likes-unlike">
+            {{ post.likedBy.count }}
+        </span>
+        </button>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        let likeButton = document.getElementById('like');
+        let unlikeButton = document.getElementById('unlike');
+        addOnClick(likeButton, unlikeButton, document.getElementById('likes-unlike'),"{{ path('like_post', {"id": post.id}) }}");
+        addOnClick(unlikeButton, likeButton, document.getElementById('likes-like'), "{{ path('unlike_post', {"id": post.id}) }}");
+
+        function switchButtons(button, oppositeButton) {
+            button.disabled = false;
+            button.style.display = 'none';
+            oppositeButton.style.display = 'block'
+        }
+
+        function addOnClick(button, oppositeButton, likeCount, path) {
+            button.addEventListener('click', function (event) {
+                button.disabled = true;
+                //include the credentials in the cookies
+                fetch(path, {'credentials': 'include'})
+                    .then(function (response) {
+                        response.json().then(function (json) {
+                            likeCount.innerText = json.count;
+                            switchButtons(button, oppositeButton)
+                        })
+                    })
+                    .catch(function () {
+                        switchButtons(button, oppositeButton);
+                    });
+                event.preventDefault()
+                ;
+            });
+        }
+    </script>
 {% endblock %}

@@ -92,6 +92,11 @@ class User implements UserInterface, Serializable, EquatableInterface
      */
     private $postsLiked;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user")
+     */
+    private $notifications;
+
     // to init the posts
     public function __construct()
     {
@@ -100,6 +105,7 @@ class User implements UserInterface, Serializable, EquatableInterface
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->postsLiked = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     /**
@@ -298,5 +304,36 @@ class User implements UserInterface, Serializable, EquatableInterface
     public function getPostsLiked(): ArrayCollection
     {
         return $this->postsLiked;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

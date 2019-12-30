@@ -33,6 +33,9 @@ services:
     arguments:
       $message: "hey"
 
-#  App\Twig\AppExtension:
-#    arguments:
-#      $locale: '%locale%'
+  #  App\Twig\AppExtension:
+  #    arguments:
+  #      $locale: '%locale%'
+  App\EventListener\LikeNotificationSubscriber:
+    tags:
+      - { name: doctrine.event_subscriber, connection: default}

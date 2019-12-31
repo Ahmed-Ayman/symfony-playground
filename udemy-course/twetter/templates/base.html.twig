@@ -27,7 +27,7 @@
         <ul class="navbar-nav px-3">
             {% if is_granted(['ROLE_USER']) %}
                 <li class="nav-item text-nowrap border-right border-secondary">
-                    <a href="" class="nav-link">
+                    <a href="{{ path('notification_all') }}" class="nav-link">
                         Notifications
                         <span class="badge badge-light" id="notification-count">
                             <i class="fa fa-circle fa-circle-o-notch fa-spin">

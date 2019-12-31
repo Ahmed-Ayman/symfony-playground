@@ -31,7 +31,7 @@ class LikeNotificationSubscriber implements EventSubscriber
     public function onFlush(OnFlushEventArgs $args)
     {
         $em = $args->getEntityManager();
-        /// keeps track of all the changes of the entities feching presisting ..
+        /// keeps track of all the changes of the entities fetching presisting ..
         $uow = $em->getUnitOfWork();
         // new elements?
         /**

@@ -63,7 +63,7 @@
     {{ encore_entry_script_tags('app') }}
     {% if is_granted('ROLE_USER') %}
         <script>
-
+            {# TODO: add this code somewhere else in the JS#}
             function fetchNotificationCount() {
 
                 fetch(
@@ -73,12 +73,13 @@
 
                     response.json().then(function (value) {
                         document.getElementById('notification-count').innerText = value.count;
-                        setTimeout( fetchNotificationCount, 5000)
+                        setTimeout(fetchNotificationCount, 5000)
                     })
                 }).catch(function (reason) {
-                    console.log( reason);
+                    console.log(reason);
                 })
             }
+
             fetchNotificationCount();
         </script>
     {% endif %}

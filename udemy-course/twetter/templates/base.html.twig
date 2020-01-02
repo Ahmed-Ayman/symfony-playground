@@ -46,13 +46,23 @@
             {% else %}
                 <li class="nav-item text-nowrap">
                     <a class="nav-link"
+                       href="{{ path('register') }}">Register</a>
+                </li>
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link"
                        href="{{ path('security_login') }}">Sign in</a>
                 </li>
+
             {% endif %}
         </ul>
     </div>
 </nav>
 <main role="main" class="container">
+
+    {% for messsage in app.flashes('success') %}
+        <div class=" alert alert-success">  {{ messsage }}</div>
+    {% endfor %}
+
     <div class="my-3 p-3 bg-white rounded box-shadow">
         {% block body %}
         {% endblock %}

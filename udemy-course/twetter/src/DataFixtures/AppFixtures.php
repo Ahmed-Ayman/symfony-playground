@@ -86,6 +86,7 @@ class AppFixtures extends Fixture
             $user->setFullname($userData['fullName']);
             $user->setEmail($userData['email']);
             $user->setRoles($userData['roles']);
+            $user->setEnabled(true);
             $this->addReference($userData['username'], $user);
             $manager->persist($user);
             $manager->flush();

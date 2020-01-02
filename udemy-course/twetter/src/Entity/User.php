@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields="email", message="This email is already used.")
  * @UniqueEntity(fields="username", message="This username is already used.")
  */
-class User implements UserInterface, Serializable, EquatableInterface
+class User implements AdvancedUserInterface, Serializable, EquatableInterface
 {
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -97,6 +98,16 @@ class User implements UserInterface, Serializable, EquatableInterface
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $confirmationToken;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
     // to init the posts
     public function __construct()
     {
@@ -106,6 +117,40 @@ class User implements UserInterface, Serializable, EquatableInterface
         $this->following = new ArrayCollection();
         $this->postsLiked = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->roles = [self::ROLE_USER];
+        $this->enabled = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param mixed $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
     }
 
     /**
@@ -248,7 +293,8 @@ class User implements UserInterface, Serializable, EquatableInterface
         list($this->id,
             $this->username,
             $this->password,
-            $this->email) = unserialize($serialized);
+            $this->email,
+            $this->enabled) = unserialize($serialized);
     }
 
     /**
@@ -260,7 +306,8 @@ class User implements UserInterface, Serializable, EquatableInterface
             $this->id,
             $this->username,
             $this->password,
-            $this->email
+            $this->email,
+            $this->enabled
         ]);
     }
 
@@ -335,5 +382,29 @@ class User implements UserInterface, Serializable, EquatableInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
     }
 }

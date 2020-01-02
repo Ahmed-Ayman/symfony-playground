@@ -17,7 +17,7 @@ jobs:
       - checkout
       - run: 
           name: Install PHP MYSQL
-          command: sudo docker-php-ext-installl pdo_mysql
+          command: sudo docker-php-ext-install pdo_mysql
       - run:
           name: Wait for mysql
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s

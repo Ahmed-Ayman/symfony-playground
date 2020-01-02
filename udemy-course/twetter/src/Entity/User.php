@@ -108,6 +108,10 @@ class User implements AdvancedUserInterface, Serializable, EquatableInterface
      */
     private $enabled;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserPreferences", cascade={"persist"})
+     */
+    private $preferences;
     // to init the posts
     public function __construct()
     {
@@ -119,6 +123,22 @@ class User implements AdvancedUserInterface, Serializable, EquatableInterface
         $this->notifications = new ArrayCollection();
         $this->roles = [self::ROLE_USER];
         $this->enabled = false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    /**
+     * @param mixed $preferences
+     */
+    public function addPreference($preferences): void
+    {
+        $this->preferences = $preferences;
     }
 
     /**

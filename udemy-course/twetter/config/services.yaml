@@ -41,8 +41,20 @@ services:
     tags:
       - { name: doctrine.event_subscriber, connection: default}
   App\EventListener\UserRegisteredSubscriber:
-    arguments: ['@logger']
-
+    arguments:
+      # TODO: add explicit and implict arguments like logger with this
+      $defaultLocale: '%kernel.default_locale%'
   App\Mailer\Mailer:
     arguments:
       $mailFrom: '%email_from%'
+
+  Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+    arguments:
+      #      - 'mysql:dbname=session_db'
+      #      - { db_username: user, db_password: my_password}
+      - !service { class: PDO , factory: 'database_connection:getWrappedConnection'}
+      #      There is already an active transaction
+      - {lock_mode: 1}
+  App\EventListener\LocaleSubscriber:
+    arguments:
+      ['%kernel.default_locale%']

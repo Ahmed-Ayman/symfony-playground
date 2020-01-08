@@ -83,7 +83,7 @@ class MicroPostController extends AbstractController
      * @return RedirectResponse|Response
      */
     public function add(Request $request, TokenStorageInterface $token)
-    {
+    {   $this->isGranted();
         $microPost = new MicroPost();
         $user = $token->getToken()->getUser();
         $microPost->setUser($user);

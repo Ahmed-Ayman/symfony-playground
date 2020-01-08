@@ -53,6 +53,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "symfony/asset": {
+        "version": "v4.4.2"
+    },
     "symfony/cache": {
         "version": "v4.0.2"
     },

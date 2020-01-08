@@ -5,5 +5,4 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-.idea/
 /.env

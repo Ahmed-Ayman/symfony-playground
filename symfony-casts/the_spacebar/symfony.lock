@@ -8,11 +8,11 @@
     "psr/log": {
         "version": "1.0.2"
     },
-    "psr/simple-cache": {
-        "version": "1.0.0"
-    },
     "symfony/cache": {
         "version": "v4.0.2"
+    },
+    "symfony/cache-contracts": {
+        "version": "v1.1.7"
     },
     "symfony/config": {
         "version": "v4.0.2"
@@ -35,8 +35,14 @@
     "symfony/dotenv": {
         "version": "v4.0.2"
     },
+    "symfony/error-handler": {
+        "version": "v4.4.2"
+    },
     "symfony/event-dispatcher": {
         "version": "v4.0.2"
+    },
+    "symfony/event-dispatcher-contracts": {
+        "version": "v1.1.7"
     },
     "symfony/filesystem": {
         "version": "v4.0.2"
@@ -71,11 +77,23 @@
     "symfony/lts": {
         "version": "4-dev"
     },
+    "symfony/mime": {
+        "version": "v4.4.2"
+    },
     "symfony/polyfill-ctype": {
         "version": "v1.9.0"
     },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.13.1"
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-php72": {
+        "version": "v1.13.1"
+    },
+    "symfony/polyfill-php73": {
+        "version": "v1.13.1"
     },
     "symfony/routing": {
         "version": "4.0",
@@ -85,6 +103,15 @@
             "version": "4.0",
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
+    },
+    "symfony/service-contracts": {
+        "version": "v1.1.8"
+    },
+    "symfony/var-dumper": {
+        "version": "v4.4.2"
+    },
+    "symfony/var-exporter": {
+        "version": "v4.4.2"
     },
     "symfony/yaml": {
         "version": "v4.0.2"

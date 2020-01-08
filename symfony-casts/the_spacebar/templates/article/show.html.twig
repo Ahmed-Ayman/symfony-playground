@@ -60,31 +60,22 @@
                         <div class="col-sm-12">
                             <h3><i class="pr-3 fa fa-comment"></i>{{comments | length}} Comments</h3>
                             <hr>
+                            {% for comment in comments %}
 
-                            <div class="row mb-5">
-                                <div class="col-sm-12">
-                                    <img class="comment-img rounded-circle" src="{{ asset('images/astronaut-profile.png') }}">
-                                    <div class="comment-container d-inline-block pl-3 align-top">
-                                        <span class="commenter-name">Amy Oort</span>
-                                        <div class="form-group">
-                                            <textarea class="form-control comment-form" id="articleText" rows="1"></textarea>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
+                                        <div class="comment-container d-inline-block pl-3 align-top">
+                                            <span class="commenter-name">Mike Ferengi</span>
+                                            <br>
+                                            <span class="comment">{{ comment }}</span>
+                                            <p><a href="#">Reply</a></p>
                                         </div>
-                                        <button type="submit" class="btn btn-info">Comment</button>
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
-                                    <div class="comment-container d-inline-block pl-3 align-top">
-                                        <span class="commenter-name">Mike Ferengi</span>
-                                        <br>
-                                        <span class="comment"> Now would this be apple wood smoked bacon? Or traditional bacon - IMHO it makes a difference.</span>
-                                        <p><a href="#">Reply</a></p>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -94,3 +85,4 @@
     </div>
 
 {% endblock %}
+
